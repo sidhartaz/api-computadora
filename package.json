@@ -1,0 +1,21 @@
+{
+  "name": "api-computadoras",
+  "version": "1.0.0",
+  "description": "API REST de computadoras con Node.js, Express y MySQL",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test-connection": "node src/config/testConnection.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.0",
+    "sequelize": "^6.32.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
