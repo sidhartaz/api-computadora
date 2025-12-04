@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Trader | Publicaciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="publications-page-body">
+    <header class="publications-topbar">
+        <div class="topbar-left">
+            <div class="logo-placeholder"><i class="fa-solid fa-layer-group"></i> Card Trader</div>
+            <span class="subtext">Explora todas las publicaciones disponibles</span>
+        </div>
+        <div class="topbar-actions">
+            <a class="btn-secondary" href="/">Volver al inicio</a>
+        </div>
+    </header>
+
+    <main class="publications-page">
+        <section class="card">
+            <div class="card-header publications-header">
+                <div>
+                    <h3>Todas las publicaciones</h3>
+                    <p class="subtext">Vista pública para consultar las cartas aprobadas y activas.</p>
+                </div>
+                <div class="pill-counter">
+                    <span id="all-publications-count">0</span> activas
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="all-publications-grid" class="publications-grid">
+                    <p class="subtext">Cargando publicaciones...</p>
+                </div>
+            </div>
+            <div class="pagination-bar">
+                <button class="btn-secondary" id="all-publications-prev" disabled>
+                    <i class="fa-solid fa-chevron-left"></i> Anterior
+                </button>
+                <div class="pagination-label" id="all-publications-pages">Página 1 de 1</div>
+                <button class="btn-secondary" id="all-publications-next" disabled>
+                    Siguiente <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/publications-page.js"></script>
+</body>
+</html>

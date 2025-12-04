@@ -1,0 +1,357 @@
+    <!-- 2. APP PRINCIPAL                                        -->
+    <!-- ======================================================= -->
+    <div class="dashboard-container hidden" id="main-app">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-placeholder"><i class="fa-solid fa-layer-group"></i> Card Trader</div>
+            </div>
+
+            <nav class="menu">
+                <a href="#" class="menu-item active" data-view="home" onclick="showView('home', this)">
+                    <i class="fa-solid fa-house"></i> Inicio
+                </a>
+                <a href="#" class="menu-item" data-view="catalog" onclick="showView('catalog', this)">
+                    <i class="fa-solid fa-magnifying-glass"></i> Buscar Cartas
+                </a>
+                <a href="#" class="menu-item" data-view="publications" onclick="showView('publications', this)">
+                    <i class="fa-solid fa-list"></i> Publicaciones
+                </a>
+                
+                <div class="menu-separator">GESTIÓN</div>
+                
+                <a href="#" class="menu-item" data-view="dashboard" onclick="showView('dashboard', this)">
+                    <i class="fa-solid fa-box-open"></i> Mis Cartas
+                </a>
+                <a href="#" class="menu-item seller-only" onclick="toggleModal()">
+                    <i class="fa-solid fa-plus-circle"></i> Publicar Carta
+                </a>
+                <a href="#" class="menu-item" data-view="reservations" onclick="showView('reservations', this)">
+                    <i class="fa-solid fa-calendar-check"></i> Reservas
+                </a>
+                <a href="#" class="menu-item" onclick="showView('history', this); loadOrderHistory();"><i class="fa-solid fa-clock-rotate-left"></i> Historial</a>
+                
+                <div class="menu-separator">CUENTA</div>
+
+                <div class="menu-separator admin-only">ADMINISTRACIÓN</div>
+                <a href="#" class="menu-item admin-only" data-view="admin" onclick="showView('admin', this)">
+                    <i class="fa-solid fa-shield-halved"></i> Panel Admin
+                </a>
+
+                <a href="#" class="menu-item" onclick="showView('dashboard', this)">
+                    <i class="fa-solid fa-user"></i> Mi Perfil
+                </a>
+                <a href="#" class="menu-item" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+                </a>
+            </nav>
+
+            <div class="user-footer">
+                <div class="user-avatar-small"><i class="fa-solid fa-user"></i></div>
+                <div class="user-info-mini">
+                    <span id="user-display-name">Usuario</span>
+                    <small class="subtext">Sesión activa</small>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <header class="top-header">
+                <h1 id="page-title">Bienvenido</h1>
+                <div class="header-actions">
+                    <div class="notification-wrapper">
+                        <button class="btn-secondary" id="notifications-toggle" onclick="toggleNotifications()" aria-label="Notificaciones">
+                            <i class="fa-regular fa-bell"></i>
+                            <span id="notification-badge" class="pill-counter hidden">0</span>
+                        </button>
+                        <div class="notification-dropdown hidden" id="notification-dropdown">
+                            <div class="notice-header">
+                                <h4>Notificaciones</h4>
+                                <span class="pill-counter" id="notification-counter">0</span>
+                            </div>
+                            <div class="notice-list" id="notification-list">
+                                <p class="subtext">Sin notificaciones nuevas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary seller-only" onclick="toggleModal()">
+                        <i class="fa-solid fa-plus"></i> Nueva Publicación
+                    </button>
+                </div>
+            </header>
+
+            <!-- VISTA HOME -->
+            <div id="view-home" class="view-section">
+                <div class="hero-banner">
+                    <div class="hero-content">
+                        <h2>El Mercado de Coleccionistas</h2>
+                        <p>Compra, vende e intercambia cartas de Pokémon, Yu-Gi-Oh! y Mitos y Leyendas con seguridad garantizada.</p>
+                        <button class="btn-white" onclick="showView('catalog', document.querySelector('.menu-item:nth-child(2)'))">
+                            Explorar Cartas
+                        </button>
+                    </div>
+                    <div class="hero-decoration"><i class="fa-solid fa-layer-group"></i></div>
+                </div>
+
+                <div class="categories-row">
+                    <div class="category-pill active"><i class="fa-solid fa-fire"></i> Tendencias</div>
+                    <div class="category-pill"><i class="fa-solid fa-bolt"></i> Pokémon</div>
+                    <div class="category-pill"><i class="fa-solid fa-dragon"></i> Yu-Gi-Oh!</div>
+                    <div class="category-pill"><i class="fa-solid fa-scroll"></i> Mitos y Leyendas</div>
+                </div>
+
+                <div class="section-header">
+                    <h3>Últimas Publicaciones</h3>
+                    <a href="#" onclick="showView('catalog')">Ver todo</a>
+                </div>
+
+                <div class="cards-grid" id="home-listings"></div>
+            </div>
+
+            <!-- VISTA DASHBOARD -->
+            <div id="view-dashboard" class="view-section hidden">
+                <div class="grid-layout">
+                    <div class="col-left">
+                        <div class="card profile-card">
+                            <div class="card-header"><h3>Información de Perfil</h3></div>
+                            <div class="card-body">
+                                <div class="profile-detail">
+                                    <label>Nombre</label><p id="profile-name">Cargando...</p>
+                                </div>
+                                <div class="profile-detail">
+                                    <label>Correo</label><p id="profile-email">Cargando...</p>
+                                </div>
+                                <div class="profile-detail">
+                                    <label>Membresía</label>
+                                    <span class="badge badge-success" id="profile-role">Vendedor</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <label>WhatsApp</label><p id="profile-whatsapp" class="subtext">No configurado</p>
+                                </div>
+                                <div class="profile-detail">
+                                    <label>Reputación</label>
+                                    <div class="stars">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                    </div>
+                                </div>
+                                <button class="btn-block" onclick="openProfileModal()">Editar perfil</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-right">
+                        <div class="card inventory-section">
+                            <div class="card-header"><h3>Inventario Destacado</h3></div>
+                            <div class="card-body flex-row" id="featured-listing">
+                                <p class="subtext">Cargando publicación destacada...</p>
+                            </div>
+                        </div>
+
+                        <div class="card publications-list">
+                            <div class="card-header">
+                                <div>
+                                    <h3>Mis publicaciones</h3>
+                                    <p class="subtext">Aprueba o rechaza reservas, edita tus publicaciones y revisa avisos.</p>
+                                </div>
+                                <div class="inline-actions seller-only">
+                                    <button class="btn-secondary" onclick="toggleModal(true)">
+                                        <i class="fa-solid fa-plus"></i> Nueva publicación
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body" id="seller-listings"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA PANEL ADMIN -->
+            <div id="view-admin" class="view-section hidden">
+                <div class="grid-layout">
+                    <div class="col-left">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Gestión de Usuarios</h3>
+                                <div class="inline-actions">
+                                    <button class="btn-secondary" onclick="loadAdminUsers()">Recargar usuarios</button>
+                                    <button class="btn-secondary danger" onclick="logout()">Cerrar sesión</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table" id="admin-users-table">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Rol</th>
+                                        <th>Activo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    <!-- Filas cargadas por JS -->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-right">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Publicaciones Pendientes</h3>
+                                <button class="btn-secondary" onclick="loadPendingPublications()">Recargar publicaciones</button>
+                            </div>
+                            <div class="card-body">
+                                <table class="table" id="admin-publications-table">
+                                    <tr>
+                                        <th>Carta</th>
+                                        <th>Vendedor</th>
+                                        <th>Precio</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    <!-- Filas cargadas por JS -->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA HISTORIAL -->
+            <div id="view-history" class="view-section hidden">
+                <div class="card">
+                    <div class="card-header history-header">
+                        <div>
+                            <h3>Historial de órdenes</h3>
+                            <p class="subtext">Consulta todas tus compras, reservas y ventas con su trazabilidad.</p>
+                        </div>
+                        <div class="history-filters">
+                            <select class="form-input" id="history-status-filter" onchange="loadOrderHistory()">
+                                <option value="">Todos los estados</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="reservada">Reservada</option>
+                                <option value="pagada">Pagada</option>
+                                <option value="cancelada">Cancelada</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="history-tabs">
+                        <button class="history-tab active" data-type="" onclick="setHistoryTypeFilter('')">Todo</button>
+                        <button class="history-tab" data-type="compra" onclick="setHistoryTypeFilter('compra')">Compras</button>
+                        <button class="history-tab" data-type="reserva" onclick="setHistoryTypeFilter('reserva')">Reservas</button>
+                    </div>
+                    <div class="history-summary" id="history-summary">
+                        <div class="history-summary-card">
+                            <p class="summary-label">Compras</p>
+                            <p class="summary-value">0</p>
+                            <p class="summary-sub">Totales</p>
+                        </div>
+                        <div class="history-summary-card">
+                            <p class="summary-label">Reservas</p>
+                            <p class="summary-value">0</p>
+                            <p class="summary-sub">Totales</p>
+                        </div>
+                        <div class="history-summary-card">
+                            <p class="summary-label">Reservas activas</p>
+                            <p class="summary-value">0</p>
+                            <p class="summary-sub">En estado reservada</p>
+                        </div>
+                    </div>
+                    <div class="card-body" id="history-list">
+                        <p class="subtext">Carga el historial para ver tus movimientos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA RESERVAS (CLIENTE) -->
+            <div id="view-reservations" class="view-section hidden">
+                <div class="card">
+                    <div class="card-header reservations-header">
+                        <div>
+                            <h3>Mis reservas</h3>
+                            <p class="subtext">Encuentra rápidamente las publicaciones que tienes reservadas.</p>
+                        </div>
+                        <div class="pill-counter" id="reservations-count">0</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="reservations-grid" id="client-reservations-list">
+                            <p class="subtext">Inicia sesión como cliente para ver tus reservas activas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA PUBLICACIONES -->
+            <div id="view-publications" class="view-section hidden">
+                <div class="card">
+                    <div class="card-header publications-header">
+                        <div>
+                            <h3>Publicaciones disponibles</h3>
+                            <p class="subtext">Explora publicaciones aprobadas, revisa su disponibilidad y contacta al vendedor.</p>
+                        </div>
+                        <div class="pill-counter">
+                            <span id="publications-count">0</span> activas
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="publications-list" class="publications-grid">
+                            <p class="subtext">Cargando publicaciones...</p>
+                        </div>
+                        <div class="pagination-bar">
+                            <button class="btn-secondary" id="publications-prev" disabled>
+                                <i class="fa-solid fa-chevron-left"></i> Anterior
+                            </button>
+                            <div class="pagination-label" id="publications-pages">Página 1 de 1</div>
+                            <button class="btn-secondary" id="publications-next" disabled>
+                                Siguiente <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA DETALLE CARTA -->
+            <div id="view-card-detail" class="view-section hidden">
+                <button class="btn-secondary" onclick="goBackToCatalog()">
+                    ← Volver al Catálogo
+                </button>
+                <div id="cardDetailContent">
+                    <!-- Contenido dinámico -->
+                </div>
+            </div>
+
+            <!-- VISTA CATALOGO -->
+            <div id="view-catalog" class="view-section hidden">
+                <h2>Buscar Cartas Pokémon</h2>
+
+                <div class="search-bar-container">
+                    <input 
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Buscar cartas (ej: charizard, pikachu, squirtle)...">
+                    <button class="btn-primary" onclick="searchCards()">Buscar</button>
+                </div>
+
+                <div id="resultsContainer" class="cards-grid">
+                    <!-- Cartas buscadas -->
+                </div>
+
+                <div class="pagination-bar">
+                    <button class="btn-secondary" id="catalog-prev" disabled>
+                        <i class="fa-solid fa-chevron-left"></i> Anterior
+                    </button>
+                    <div class="pagination-label" id="catalog-pages">Página 1 de 1</div>
+                    <button class="btn-secondary" id="catalog-next" disabled>
+                        Siguiente <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+

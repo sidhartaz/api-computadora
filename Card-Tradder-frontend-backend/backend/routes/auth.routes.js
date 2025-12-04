@@ -1,80 +1,43 @@
+// Importa Express para crear el router de rutas
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+// Importa middlewares de autenticación y validación de rol
+const { authRequired, requireRole } = require('../middlewares/auth');
+// Importa los controladores relacionados con autenticación y perfil de usuario
+const {
+  adminSales,
+  getProfile,
+  login,
+  register,
+  updateProfile,
+} = require('../controllers/authController');
 
+// Crea una nueva instancia de router de Express
 const router = express.Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
+// Ruta para registrar un nuevo usuario
+// POST /api/auth/register
+// No requiere autenticación previa
+router.post('/register', register);
 
-// POST /api/register
-router.post('/register', async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
+// Ruta para iniciar sesión (login) de un usuario
+// POST /api/auth/login
+// No requiere autenticación previa
+router.post('/login', login);
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Faltan campos obligatorios' });
-    }
+// Ruta para obtener el perfil del usuario autenticado
+// GET /api/auth/me
+// Requiere tener un token válido (authRequired)
+router.get('/me', authRequired, getProfile);
 
-    const exists = await User.findOne({ email });
-    if (exists) {
-      return res.status(400).json({ message: 'Email ya registrado' });
-    }
+// Ruta para actualizar el perfil del usuario autenticado
+// PATCH /api/auth/me
+// Requiere estar autenticado
+router.patch('/me', authRequired, updateProfile);
 
-    const hashed = await bcrypt.hash(password, 10);
+// Ruta de ejemplo para una sección de administración de ventas
+// GET /api/auth/admin/ventas
+// Requiere estar autenticado Y tener rol 'admin'
+router.get('/admin/ventas', authRequired, requireRole('admin'), adminSales);
 
-    const validRoles = ['cliente', 'vendedor', 'admin'];
-    const user = await User.create({
-      name,
-      email,
-      password: hashed,
-      role: validRoles.includes(role) ? role : 'cliente', // por defecto cliente
-    });
-
-    res.status(201).json({
-      message: 'Usuario creado',
-      user: { id: user._id, email: user.email, role: user.role },
-    });
-  } catch (err) {
-    console.error('Error en /register:', err);
-    res.status(500).json({ message: 'Error en el servidor' });
-  }
-});
-
-// POST /api/login
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email y password requeridos' });
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Credenciales inválidas' });
-    }
-
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) {
-      return res.status(401).json({ message: 'Credenciales inválidas' });
-    }
-
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    res.json({
-      message: 'Login correcto',
-      token,
-      role: user.role,
-    });
-  } catch (err) {
-    console.error('Error en /login:', err);
-    res.status(500).json({ message: 'Error en el servidor' });
-  }
-});
-
+// Exporta el router para usarlo en server.js u otro archivo de rutas principal
 module.exports = router;

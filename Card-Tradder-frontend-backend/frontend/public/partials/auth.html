@@ -1,0 +1,95 @@
+    <!-- 1. SECCIÓN DE LOGIN / REGISTRO                         -->
+    <!-- ======================================================= -->
+    <div class="auth-container" id="auth-section">
+        <div class="auth-background">
+            <div class="circle c1"></div>
+            <div class="circle c2"></div>
+        </div>
+    
+        <!-- LOGIN -->
+        <div class="auth-card" id="form-login">
+            <div class="auth-header">
+                <div class="logo-auth"><i class="fa-solid fa-layer-group"></i></div>
+                <h2>Bienvenido</h2>
+                <p>Ingresa a tu cuenta</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" id="login-email" class="form-input pl-4" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="login-pass" class="form-input pl-4" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-block">Iniciar Sesión</button>
+            </form>
+            <div class="auth-footer">
+                <p>¿No tienes cuenta? <a onclick="toggleAuth('register')">Regístrate gratis</a></p>
+                <p class="subtext">Solo quieres mirar? <a href="/publicaciones.html">Explora publicaciones</a></p>
+            </div>
+        </div>
+    
+        <!-- REGISTRO -->
+        <div class="auth-card hidden" id="form-register">
+            <div class="auth-header">
+                <h2>Crear Cuenta</h2>
+                <p>Únete a la comunidad</p>
+            </div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" id="reg-name" class="form-input pl-4" placeholder="Tu nombre" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" id="reg-email" class="form-input pl-4" placeholder="email@ejemplo.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Quiero ser:</label>
+                    <div class="role-selector">
+                        <label class="radio-card">
+                            <input type="radio" name="role" value="cliente" checked>
+                            <div class="card-content">
+                                <i class="fa-solid fa-bag-shopping"></i><span>Cliente</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="role" value="vendedor">
+                            <div class="card-content">
+                                <i class="fa-solid fa-store"></i><span>Vendedor</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="reg-pass" class="form-input pl-4" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-block">Crear Cuenta</button>
+            </form>
+            <div class="auth-footer">
+                <p>¿Ya tienes cuenta? <a onclick="toggleAuth('login')">Inicia Sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->

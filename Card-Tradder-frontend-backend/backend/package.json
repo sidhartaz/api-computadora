@@ -4,7 +4,7 @@
   "description": "Backend API for Card-Tradder project (Node.js + Express + MongoDB).",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No hay pruebas configuradas\"",
     "start": "node server.js"
   },
   "keywords": [],

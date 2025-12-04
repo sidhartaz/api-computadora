@@ -1,0 +1,105 @@
+    <!-- MODAL DE PUBLICACIÓN -->
+    <div class="modal-overlay" id="modalPublish">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modal-title">Nueva Publicación</h2>
+                <button class="btn-close" onclick="toggleModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="publish-form" onsubmit="handleCreateListing(event)">
+                    <div class="form-group">
+                        <label>Nombre de la publicación</label>
+                        <input type="text" class="form-input" id="listing-name" placeholder="Charizard holográfico primera edición" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ID de la carta (TCGplayer ID guardado en base de datos)</label>
+                        <input type="text" class="form-input" id="listing-card-id" placeholder="base1-4">
+                        <small>Usa el buscador para copiar el ID exacto de la carta (opcional).</small>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Condición</label>
+                            <select class="form-input" id="listing-condition" required>
+                                <option value="Mint">Mint</option>
+                                <option value="Near Mint">Near Mint</option>
+                                <option value="Lightly Played">Lightly Played</option>
+                                <option value="Damaged">Damaged</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio (CLP)</label>
+                            <input type="number" class="form-input" id="listing-price" placeholder="150000" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea class="form-input" id="listing-description" rows="3" placeholder="Notas opcionales sobre la carta"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp del vendedor (solo visible para reservas)</label>
+                        <input type="text" class="form-input" id="listing-whatsapp" placeholder="Ej: +56912345678">
+                        <small>Comparte un número donde puedas coordinar con el comprador cuando tenga una reserva activa.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagen de la carta (opcional)</label>
+                        <input type="file" class="form-input" accept="image/*" id="listing-image" onchange="handleListingImageChange(event)">
+                        <small>La imagen se guardará en la base de datos junto con la publicación.</small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="toggleModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="publish-submit-label">Enviar a Revisión</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PERFIL -->
+    <div class="modal-overlay" id="modalProfile">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Editar perfil</h2>
+                <button class="btn-close" onclick="toggleProfileModal(false)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profile-form" onsubmit="handleProfileSubmit(event)">
+                    <div class="form-group">
+                        <label>Nombre completo</label>
+                        <input type="text" class="form-input" id="profile-edit-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp (solo visible para tus compradores con reserva)</label>
+                        <input type="text" class="form-input" id="profile-edit-whatsapp" placeholder="Ej: +56912345678">
+                        <small>Este número se usa como valor por defecto en tus publicaciones nuevas y solo lo ve quien tiene una reserva activa.</small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="toggleProfileModal(false)">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLE DE ORDEN -->
+    <div class="modal-overlay" id="orderDetailModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Detalle de la orden</h2>
+                <button class="btn-close" onclick="toggleOrderDetail(false)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="order-detail-body">
+                <p class="subtext">Selecciona un pedido para ver su detalle.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- LÓGICA JAVASCRIPT                                       -->
+    <!-- ======================================================= -->
